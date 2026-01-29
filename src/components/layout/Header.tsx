@@ -27,12 +27,12 @@ export function Header() {
       <div className="container mx-auto px-4">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-0 bg-white rounded-md p-2">
+          <Link to="/" className="flex items-center gap-0 bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
             <img src={logo} alt="SkillBridge Bouwservices" className="h-12 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-8 ml-4">
+          <nav className="hidden lg:flex items-center gap-6 ml-6">
             {navigation.map((item) => (
               <Link
                 key={item.name}
