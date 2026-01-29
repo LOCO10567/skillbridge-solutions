@@ -83,7 +83,7 @@ export function Footer() {
           <div>
             <h4 className="font-semibold text-lg mb-4">Werkgebied</h4>
             <p className="text-sm text-primary-foreground/80 mb-4">
-              Wij werken in [Regio] en omstreken, waaronder:
+              Wij werken in Zuid-Holland en omstreken, waaronder:
             </p>
             <ul className="space-y-2 text-sm text-primary-foreground/80">
               <li>Regio Zuid-Holland</li>
