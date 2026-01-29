@@ -27,8 +27,8 @@ export function Header() {
       <div className="container mx-auto px-4">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-0 bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
-            <img src={logo} alt="SkillBridge Bouwservices" className="h-12 w-auto" />
+          <Link to="/" className="flex items-center gap-0 bg-white rounded-lg p-2 hover:shadow-md transition-shadow">
+            <img src={logo} alt="SkillBridge Bouwservices" className="h-16 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
