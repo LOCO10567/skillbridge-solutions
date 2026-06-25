@@ -76,13 +76,6 @@ const services = [
     description: "Strakke vloeren en gerenoveerde trappen",
     slug: "vloeren"
   },
-
-  { 
-    icon: Footprints, 
-    title: "Vloeren en trappen", 
-    description: "Strakke vloeren en gerenoveerde trappen",
-    slug: "vloeren"
-  },
 ];
 
 export function ServicesGrid() {
