@@ -38,7 +38,15 @@ export const stepContactSchema = z.object({
   contactPreference: z.enum(["Bellen", "WhatsApp", "E-mail"], {
     errorMap: () => ({ message: "Kies een contactvoorkeur" }),
   }),
+  // Honeypot — must stay empty
+  company_website: z.string().max(0).optional(),
 });
+
+export function formatPostcode(input: string): string {
+  const cleaned = input.toUpperCase().replace(/\s+/g, "");
+  if (cleaned.length <= 4) return cleaned;
+  return `${cleaned.slice(0, 4)} ${cleaned.slice(4, 6)}`;
+}
 
 export const quoteSchema = stepServiceSchema
   .merge(stepScopeSchema)
