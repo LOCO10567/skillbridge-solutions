@@ -9,7 +9,6 @@ import {
   Building2, 
   Building, 
   Square, 
-  Thermometer, 
   Footprints,
   ArrowRight
 } from "lucide-react";
