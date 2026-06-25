@@ -41,14 +41,13 @@ const topServices = [
   { icon: Home, title: "Aanbouw / opbouw" },
   { icon: Layers, title: "Dakkapel" },
   { icon: Footprints, title: "Vloeren & trappen" },
-  { icon: Thermometer, title: "Warmte-isolatie" },
+  { icon: Building, title: "Nieuwbouw" },
 ];
 
 const moreServices = [
   { icon: Car, title: "Carport" },
   { icon: Warehouse, title: "Garage" },
   { icon: Building2, title: "Kelder" },
-  { icon: Building, title: "Nieuwbouw" },
   { icon: Square, title: "Ombouw / koof" },
 ];
 

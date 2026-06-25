@@ -9,7 +9,6 @@ import {
   Building2, 
   Building, 
   Square, 
-  Thermometer, 
   Footprints,
   ArrowRight
 } from "lucide-react";
@@ -69,12 +68,6 @@ const services = [
     title: "Ombouw/koof", 
     description: "Nette afwerking van leidingen",
     slug: "koof"
-  },
-  { 
-    icon: Thermometer, 
-    title: "Warmte isolatie", 
-    description: "Bespaar energie, verhoog comfort",
-    slug: "isolatie"
   },
   { 
     icon: Footprints, 

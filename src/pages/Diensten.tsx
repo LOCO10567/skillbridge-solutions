@@ -11,7 +11,6 @@ import {
   Building2, 
   Building, 
   Square, 
-  Thermometer, 
   Footprints,
   ArrowRight,
   CheckCircle
@@ -80,13 +79,6 @@ const services = [
     title: "Ombouw/koof plaatsen of vervangen", 
     description: "Een koof of ombouw zorgt voor een strakke afwerking rondom leidingen, ventilatiekanalen of constructiedelen. Wij plaatsen of vervangen koven met oog voor symmetrie, nette hoeken en een afwerking die naadloos aansluit op de ruimte. Ideaal bij renovaties, badkamers, keukens of om technische onderdelen netjes weg te werken. We zorgen dat het stevig is, goed toegankelijk blijft waar nodig, en klaar is om te schilderen of af te werken. Klein onderdeel, groot verschil in uitstraling.",
     features: ["Strakke afwerking", "Symmetrische uitvoering", "Toegankelijk waar nodig", "Schilderklaar"]
-  },
-  { 
-    id: "isolatie",
-    icon: Thermometer, 
-    title: "Warmte isolatie", 
-    description: "Goede isolatie maakt je woning comfortabeler en verlaagt het energieverbruik. We verzorgen warmte isolatie waar het telt, bijvoorbeeld bij aanbouw, renovatie, dak en wanden. We letten op juiste materiaalkeuze, aansluiting en luchtdichtheid om warmteverlies en vochtproblemen te voorkomen. Je krijgt een oplossing die past bij jouw situatie en budget, en we leggen duidelijk uit wat het effect is. Met nette uitvoering en goede details haal je het maximale uit isolatie.",
-    features: ["Energiebesparing", "Meer comfort", "Juiste materialen", "Vochtpreventie"]
   },
   { 
     id: "vloeren",

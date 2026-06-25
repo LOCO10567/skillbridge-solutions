@@ -22,7 +22,7 @@ const serviceTypes = [
   "Kelder",
   "Nieuwbouw",
   "Ombouw/koof",
-  "Warmte isolatie",
+  
   "Vloeren en trappen",
   "Anders",
 ];
