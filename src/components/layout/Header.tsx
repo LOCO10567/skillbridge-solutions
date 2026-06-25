@@ -25,10 +25,10 @@ export function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4">
-        <div className="flex h-20 items-center justify-between">
+        <div className="flex h-24 md:h-28 items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-0 bg-white rounded-lg p-2 hover:shadow-md transition-shadow">
-            <img src={logo} alt="SkillBridge Bouwservices" className="h-16 w-auto" />
+          <Link to="/" className="flex items-center bg-white rounded-xl p-2 md:p-3 hover:shadow-md transition-shadow shrink-0">
+            <img src={logo} alt="SkillBridge Bouwservices" className="h-16 md:h-20 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
