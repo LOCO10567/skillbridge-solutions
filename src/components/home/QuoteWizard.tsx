@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Home,
   Layers,
@@ -11,9 +12,9 @@ import {
   Square,
   Thermometer,
   Footprints,
+  Plus,
   ArrowRight,
   ArrowLeft,
-  CheckCircle2,
   ShieldCheck,
   Star,
   Clock,
@@ -25,25 +26,30 @@ import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 import {
   stepServiceSchema,
   stepScopeSchema,
   stepLocationSchema,
   stepContactSchema,
+  formatPostcode,
 } from "@/lib/quote-schema";
 
-const services = [
+const topServices = [
+  { icon: Bath, title: "Badkamer" },
+  { icon: Paintbrush, title: "Renovatie huis" },
   { icon: Home, title: "Aanbouw / opbouw" },
   { icon: Layers, title: "Dakkapel" },
-  { icon: Paintbrush, title: "Renovatie huis" },
-  { icon: Bath, title: "Badkamer" },
+  { icon: Footprints, title: "Vloeren & trappen" },
+  { icon: Thermometer, title: "Warmte-isolatie" },
+];
+
+const moreServices = [
   { icon: Car, title: "Carport" },
   { icon: Warehouse, title: "Garage" },
   { icon: Building2, title: "Kelder" },
   { icon: Building, title: "Nieuwbouw" },
   { icon: Square, title: "Ombouw / koof" },
-  { icon: Thermometer, title: "Warmte-isolatie" },
-  { icon: Footprints, title: "Vloeren & trappen" },
 ];
 
 const scopeOptions = ["Klein", "Middel", "Groot", "Weet ik niet"] as const;
@@ -68,6 +74,7 @@ type FormData = {
   phone: string;
   email: string;
   contactPreference: string;
+  company_website: string; // honeypot
 };
 
 const initialData: FormData = {
@@ -82,6 +89,7 @@ const initialData: FormData = {
   phone: "",
   email: "",
   contactPreference: "Bellen",
+  company_website: "",
 };
 
 const totalSteps = 4;
@@ -91,12 +99,33 @@ export function QuoteWizard() {
   const [data, setData] = useState<FormData>(initialData);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
-  const [done, setDone] = useState(false);
+  const [showMore, setShowMore] = useState(false);
+  const navigate = useNavigate();
 
   const update = (patch: Partial<FormData>) => {
     setData((d) => ({ ...d, ...patch }));
     setErrors({});
   };
+
+  // Auto-advance step 2 when scope + timing are both filled
+  useEffect(() => {
+    if (step === 2 && data.scope && data.timing) {
+      const t = setTimeout(() => setStep(3), 250);
+      return () => clearTimeout(t);
+    }
+  }, [step, data.scope, data.timing]);
+
+  // Auto-advance step 3 when postcode looks valid + clientType picked
+  useEffect(() => {
+    if (
+      step === 3 &&
+      data.clientType &&
+      /^\d{4}\s?[A-Za-z]{2}$/.test(data.postcode.trim())
+    ) {
+      const t = setTimeout(() => setStep(4), 300);
+      return () => clearTimeout(t);
+    }
+  }, [step, data.clientType, data.postcode]);
 
   const validateStep = (): boolean => {
     let res;
@@ -119,6 +148,7 @@ export function QuoteWizard() {
         phone: data.phone,
         email: data.email,
         contactPreference: data.contactPreference,
+        company_website: data.company_website,
       });
 
     if (!res.success) {
@@ -143,41 +173,46 @@ export function QuoteWizard() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateStep()) return;
-    setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 900));
-    setSubmitting(false);
-    setDone(true);
-    toast.success("Bedankt! We nemen binnen 24 uur contact op.");
-  };
 
-  if (done) {
-    return (
-      <div className="bg-card text-card-foreground rounded-2xl p-8 shadow-2xl border border-border/50">
-        <div className="text-center py-6">
-          <div className="w-16 h-16 mx-auto bg-accent/10 rounded-full flex items-center justify-center mb-4">
-            <CheckCircle2 className="h-8 w-8 text-accent" />
-          </div>
-          <h3 className="text-2xl font-bold text-foreground mb-2">
-            Bedankt, {data.name.split(" ")[0]}!
-          </h3>
-          <p className="text-muted-foreground mb-6">
-            We hebben je aanvraag voor <strong>{data.service}</strong> ontvangen.
-            Je hoort binnen 24 uur op werkdagen van ons via {data.contactPreference.toLowerCase()}.
-          </p>
-          <Button
-            variant="orangeOutline"
-            onClick={() => {
-              setData(initialData);
-              setStep(1);
-              setDone(false);
-            }}
-          >
-            Nieuwe aanvraag
-          </Button>
-        </div>
-      </div>
-    );
-  }
+    // Honeypot — silent reject
+    if (data.company_website) {
+      toast.success("Bedankt! We nemen binnen 24 uur contact op.");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const { error } = await supabase.from("quote_requests").insert({
+        service: data.service,
+        scope: data.scope,
+        timing: data.timing,
+        notes: data.notes || null,
+        postcode: formatPostcode(data.postcode),
+        city: data.city || null,
+        client_type: data.clientType,
+        name: data.name.trim(),
+        phone: data.phone.trim(),
+        email: data.email.trim().toLowerCase(),
+        contact_preference: data.contactPreference,
+        source: "hero-wizard",
+        user_agent: navigator.userAgent.slice(0, 255),
+      });
+
+      if (error) throw error;
+
+      navigate(
+        `/offerte-bedankt?service=${encodeURIComponent(
+          data.service
+        )}&name=${encodeURIComponent(data.name)}`
+      );
+    } catch (err) {
+      console.error("Quote submit failed", err);
+      toast.error(
+        "Er ging iets mis bij het verzenden. Bel ons of probeer het opnieuw."
+      );
+      setSubmitting(false);
+    }
+  };
 
   const progress = (step / totalSteps) * 100;
 
@@ -197,6 +232,29 @@ export function QuoteWizard() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Honeypot — invisible to humans */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            left: "-9999px",
+            width: "1px",
+            height: "1px",
+            overflow: "hidden",
+          }}
+        >
+          <label>
+            Website
+            <input
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              value={data.company_website}
+              onChange={(e) => update({ company_website: e.target.value })}
+            />
+          </label>
+        </div>
+
         {/* STEP 1 — Service */}
         {step === 1 && (
           <div key="s1" className="animate-in fade-in slide-in-from-right-2 duration-300">
@@ -204,37 +262,60 @@ export function QuoteWizard() {
               Wat wil je laten doen?
             </h3>
             <p className="text-sm text-muted-foreground mb-4">
-              Kies het type klus dat het beste past.
+              Kies een klustype — of bekijk meer.
             </p>
             <div className="grid grid-cols-2 gap-2">
-              {services.map((s) => {
-                const active = data.service === s.title;
-                return (
-                  <button
+              {topServices.map((s) => (
+                <ServiceButton
+                  key={s.title}
+                  icon={s.icon}
+                  title={s.title}
+                  active={data.service === s.title}
+                  onClick={() => {
+                    update({ service: s.title });
+                    setTimeout(() => setStep(2), 150);
+                  }}
+                />
+              ))}
+            </div>
+
+            {!showMore && (
+              <button
+                type="button"
+                onClick={() => setShowMore(true)}
+                className="mt-2 w-full flex items-center justify-center gap-1.5 text-sm font-medium text-accent hover:text-orange-hover py-2"
+              >
+                <Plus className="h-4 w-4" />
+                Meer mogelijkheden
+              </button>
+            )}
+
+            {showMore && (
+              <div className="mt-2 grid grid-cols-2 gap-2 animate-in fade-in duration-200">
+                {moreServices.map((s) => (
+                  <ServiceButton
                     key={s.title}
-                    type="button"
+                    icon={s.icon}
+                    title={s.title}
+                    active={data.service === s.title}
                     onClick={() => {
                       update({ service: s.title });
                       setTimeout(() => setStep(2), 150);
                     }}
-                    className={cn(
-                      "flex items-center gap-2 p-3 rounded-lg border text-left transition-all text-sm",
-                      active
-                        ? "border-accent bg-accent/10 text-foreground"
-                        : "border-border hover:border-accent/50 hover:bg-accent/5 text-foreground"
-                    )}
-                  >
-                    <s.icon
-                      className={cn(
-                        "h-4 w-4 shrink-0",
-                        active ? "text-accent" : "text-muted-foreground"
-                      )}
-                    />
-                    <span className="font-medium leading-tight">{s.title}</span>
-                  </button>
-                );
-              })}
-            </div>
+                  />
+                ))}
+                <ServiceButton
+                  icon={Square}
+                  title="Anders / weet ik nog niet"
+                  active={data.service === "Anders"}
+                  onClick={() => {
+                    update({ service: "Anders" });
+                    setTimeout(() => setStep(2), 150);
+                  }}
+                />
+              </div>
+            )}
+
             {errors.service && (
               <p className="text-xs text-destructive mt-2">{errors.service}</p>
             )}
@@ -325,8 +406,9 @@ export function QuoteWizard() {
                   placeholder="1234 AB"
                   maxLength={7}
                   value={data.postcode}
-                  onChange={(e) => update({ postcode: e.target.value.toUpperCase() })}
+                  onChange={(e) => update({ postcode: formatPostcode(e.target.value) })}
                   aria-invalid={!!errors.postcode}
+                  autoComplete="postal-code"
                 />
                 {errors.postcode && (
                   <p className="text-xs text-destructive mt-1">{errors.postcode}</p>
@@ -342,6 +424,7 @@ export function QuoteWizard() {
                   maxLength={100}
                   value={data.city}
                   onChange={(e) => update({ city: e.target.value })}
+                  autoComplete="address-level2"
                 />
               </div>
             </div>
@@ -391,6 +474,7 @@ export function QuoteWizard() {
                 value={data.name}
                 onChange={(e) => update({ name: e.target.value })}
                 aria-invalid={!!errors.name}
+                autoComplete="name"
               />
               {errors.name && <p className="text-xs text-destructive mt-1">{errors.name}</p>}
             </div>
@@ -408,6 +492,7 @@ export function QuoteWizard() {
                   value={data.phone}
                   onChange={(e) => update({ phone: e.target.value })}
                   aria-invalid={!!errors.phone}
+                  autoComplete="tel"
                 />
                 {errors.phone && <p className="text-xs text-destructive mt-1">{errors.phone}</p>}
               </div>
@@ -423,6 +508,7 @@ export function QuoteWizard() {
                   value={data.email}
                   onChange={(e) => update({ email: e.target.value })}
                   aria-invalid={!!errors.email}
+                  autoComplete="email"
                 />
                 {errors.email && <p className="text-xs text-destructive mt-1">{errors.email}</p>}
               </div>
@@ -461,7 +547,7 @@ export function QuoteWizard() {
               Terug
             </Button>
           )}
-          {step < totalSteps && step !== 1 && (
+          {step > 1 && step < totalSteps && (
             <Button
               type="button"
               variant="orange"
@@ -506,7 +592,7 @@ export function QuoteWizard() {
         </div>
 
         <p className="text-xs text-muted-foreground text-center">
-          100% vrijblijvend · Geen verplichtingen
+          100% vrijblijvend · Geen verplichtingen · Wij bellen je terug
         </p>
       </form>
 
@@ -526,6 +612,39 @@ export function QuoteWizard() {
         </span>
       </div>
     </div>
+  );
+}
+
+function ServiceButton({
+  icon: Icon,
+  title,
+  active,
+  onClick,
+}: {
+  icon: typeof Home;
+  title: string;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "flex items-center gap-2 p-3 rounded-lg border text-left transition-all text-sm",
+        active
+          ? "border-accent bg-accent/10 text-foreground"
+          : "border-border hover:border-accent/50 hover:bg-accent/5 text-foreground"
+      )}
+    >
+      <Icon
+        className={cn(
+          "h-4 w-4 shrink-0",
+          active ? "text-accent" : "text-muted-foreground"
+        )}
+      />
+      <span className="font-medium leading-tight">{title}</span>
+    </button>
   );
 }
 
