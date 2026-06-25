@@ -25,7 +25,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Logo & Contact */}
           <div className="space-y-6">
-            <img src={logo} alt="SkillBridge Bouwservices" className="h-12 w-auto brightness-0 invert" />
+            <div className="inline-flex items-center bg-white rounded-xl p-2">
+              <img src={logo} alt="SkillBridge Bouwservices" className="h-14 w-auto" />
+            </div>
             <p className="text-primary-foreground/80 text-sm">
               Verbouwen met zekerheid. Van aanbouw tot complete renovatie met heldere afspraken en vakwerk.
             </p>

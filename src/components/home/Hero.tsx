@@ -1,6 +1,7 @@
 import { Phone, MessageCircle, CheckCircle2 } from "lucide-react";
 import heroImage from "@/assets/hero-construction.jpg";
 import { QuoteWizard } from "./QuoteWizard";
+import { HeroSocialProof } from "./HeroSocialProof";
 
 const usps = [
   "Vaste prijsafspraak vooraf",
@@ -67,6 +68,11 @@ export function Hero() {
                 <MessageCircle className="h-5 w-5" />
                 WhatsApp
               </a>
+            </div>
+
+            {/* Social proof */}
+            <div className="mt-8 pt-6 border-t border-primary-foreground/10">
+              <HeroSocialProof />
             </div>
           </div>
 
