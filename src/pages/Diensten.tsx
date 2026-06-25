@@ -11,7 +11,6 @@ import {
   Building2, 
   Building, 
   Square, 
-  Thermometer, 
   Footprints,
   ArrowRight,
   CheckCircle
