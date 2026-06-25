@@ -1,87 +1,93 @@
-# Plan: High-converting Hero met Offertewizard
+# Conversie-upgrade SkillBridge
 
-## Doel
-Vervang de huidige statische hero door een conversie-gerichte hero met links de waardepropositie + USP's en rechts een **multi-step offertewizard** (4 stappen, leadcapture, geen prijsindicatie).
+## 1. Logo vergroten (snelle fix)
+- `Header.tsx`: logo van huidige hoogte naar `h-12` (desktop) / `h-10` (mobiel), met behoud van uitlijning en sticky header-hoogte.
+- Footer-logo proportioneel meegroeien.
 
-## Layout (desktop)
-```text
-┌─────────────────────────────────────────────────────────────┐
-│  HERO (antraciet bg + project foto overlay)                 │
-│  ┌───────────────────────────┐  ┌────────────────────────┐  │
-│  │ H1: Verbouwen met         │  │  OFFERTEWIZARD KAART   │  │
-│  │ zekerheid                 │  │  [Stap 1 van 4]        │  │
-│  │ Subtekst (2 regels)       │  │  ───────────────────── │  │
-│  │                           │  │  Wat wil je laten doen?│  │
-│  │ ✓ Vaste prijsafspraak     │  │  [11 dienst-tegels]    │  │
-│  │ ✓ Reactie binnen 24u      │  │                        │  │
-│  │ ✓ Eigen vaste vakmensen   │  │       [Volgende →]     │  │
-│  │ ✓ Netjes opgeleverd       │  └────────────────────────┘  │
-│  │                           │   • 100% vrijblijvend       │
-│  │ [Bel direct] [WhatsApp]   │   • Binnen 24u reactie      │
-│  └───────────────────────────┘                              │
-└─────────────────────────────────────────────────────────────┘
-```
-Op mobiel: wizard onder de tekst, full-width.
+## 2. Leads opslaan + e-mailnotificatie (kritieke fix)
+**Lovable Cloud activeren** (database + edge functions + e-mail).
 
-## Wizard stappen
+**Database**
+- Tabel `quote_requests` met velden: id, created_at, service, scope, timing, notes, postcode, city, client_type, name, phone, email, contact_preference, status (`new`/`contacted`/`won`/`lost`), source, user_agent, ip_hash.
+- RLS: anon mag `INSERT` (publiek formulier), alleen `service_role` mag lezen. Geen `SELECT` voor anon/authenticated.
+- GRANT INSERT op anon, ALL op service_role.
 
-**Stap 1 — Type klus** (verplicht)
-- Grid van 11 dienst-knoppen met icoon (uit `ServicesGrid` data):
-  Aanbouw/opbouw, Dakkapel, Renovatie huis, Badkamer, Carport, Garage, Kelder, Nieuwbouw, Ombouw/koof, Warmte-isolatie, Vloeren/trappen
-- Klik = selectie + auto-door naar stap 2
+**Spambescherming**
+- Honeypot-veld (`company_website`, hidden, moet leeg blijven).
+- Minimum-fill-time check (formulier <3s ingevuld = bot).
+- Server-side Zod-validatie in edge function (zelfde schema als client).
+- Rate limit per IP-hash (max 5 per uur) via tabel `quote_rate_limit`.
 
-**Stap 2 — Omvang & timing**
-- Geschatte omvang: chips "Klein / Middel / Groot / Weet ik niet"
-- Gewenste startdatum: chips "Z.s.m. / 1-3 mnd / 3-6 mnd / Oriënterend"
-- Optioneel: korte toelichting (textarea, max 500 chars)
+**Edge function `submit-quote`**
+- Valideert input, checkt honeypot/rate-limit, schrijft naar `quote_requests`.
+- Stuurt twee e-mails via Lovable Emails:
+  1. **Naar SkillBridge** (notificatie met alle gegevens + directe `tel:`/`mailto:` knoppen).
+  2. **Naar aanvrager** (bevestiging: "we nemen binnen 24u contact op", samenvatting aanvraag, contactgegevens SkillBridge).
+- Templates in `supabase/functions/_shared/transactional-email-templates/` met brand-styling (antraciet + oranje accent).
 
-**Stap 3 — Locatie**
-- Postcode (verplicht, regex `^\d{4}\s?[A-Za-z]{2}$`)
-- Plaats (optioneel)
-- Type opdrachtgever: Particulier / Zakelijk / VvE
+**Frontend**
+- `QuoteWizard.handleSubmit` roept edge function aan i.p.v. `setTimeout`.
+- Foutafhandeling: bij netwerkfout toon retry + tel/WhatsApp-fallback.
+- Loading-state behouden.
 
-**Stap 4 — Contactgegevens**
-- Naam, Telefoon, E-mail (verplicht)
-- Voorkeur contact: Bellen / WhatsApp / E-mail
-- Submit-knop: **"Offerte aanvragen"**
+**E-mailadres SkillBridge** — moet ik van jou krijgen (welk adres ontvangt de notificaties?). Voor nu placeholder `info@skillbridge-bouw.nl`.
 
-## UX/conversie-elementen
-- Progress bar bovenaan kaart (1/4 → 4/4)
-- "Vorige" knop vanaf stap 2
-- Per stap: kleine geruststellende microcopy ("100% vrijblijvend, geen verplichtingen")
-- Trust-signalen onder kaart: ⭐ 4.9 reviews · ✓ Erkend · ✓ Verzekerd
-- Sticky behavior: kaart blijft compact, geen scroll-jank
-- Na submit: success-state in dezelfde kaart ("Bedankt! We bellen binnen 24u") + toast
+## 3. Social proof boven de fold
+**Onder de USP-lijst in hero (linker kolom):**
+- Compacte review-strip: 5 sterren + `4.9 / 5 · 87 reviews` + 3 kleine avatar-cirkels (initialen) + 1 korte quote ("Strakke planning, netjes opgeleverd." — Mark, Utrecht).
+- Keurmerk-row: 3-4 logo-badges (Bouwgarant, VCA, KvK-geregistreerd, 10+ jaar). Als placeholder text-badges met icoon (`ShieldCheck`, `Award`) zodat geen externe logo's nodig zijn. Echte logos kan jij later aanleveren.
+- "150+ projecten opgeleverd" teller met `Hammer` icoon.
 
-## Validatie
-- Zod schema voor alle velden (postcode regex, email, telefoon, length limits 100/255 chars)
-- Inline foutmeldingen per veld
-- "Volgende"-knop disabled tot stap-vereisten kloppen
+**Boven de wizard (rechter kolom):**
+- Kleine balk: "Laatste aanvraag: 12 min geleden uit Utrecht" (statisch, niet fake-realtime — gewoon vertrouwen-signaal).
+
+## 4. Wizard UX-tuning
+**Stap 1 — minder keuze-overload**
+- Top 6 diensten zichtbaar: Aanbouw, Dakkapel, Renovatie huis, Badkamer, Nieuwbouw, Vloeren & trappen.
+- Knop "Andere klus" toont overige 5 + "Iets anders" veld.
+
+**Stap 2 — auto-progress**
+- Bij keuze omvang + timing: na 400ms automatisch naar stap 3 (alleen als beide ingevuld). Toelichting blijft optioneel + handmatige "Volgende".
+
+**Stap 3 — slimmer**
+- Postcode auto-format (1234AB → "1234 AB").
+- Optioneel: bij geldige postcode tonen we "We werken in jouw regio ✓" (statische check op eerste 2 cijfers, regio's hardcoded — geen externe API).
+
+**Stap 4 — vertrouwen**
+- Microcopy: "We bellen alleen voor deze aanvraag. Geen nieuwsbrieven."
+- Extra trust-rij onder submit: "✓ Vrijblijvend  ✓ Geen kosten  ✓ Reactie binnen 24u".
+
+**Bedankpagina (vervangt huidige success-state)**
+- Nieuwe route `/offerte-bedankt?service=...` met:
+  - Bevestiging + samenvatting.
+  - "Wat nu?" tijdlijn (24u reactie → intake → offerte).
+  - Vervolg-CTA's: "Bekijk onze projecten" en "Bel ons direct".
+  - Link "Volg ons op Instagram" (optioneel).
+- Wizard redirect naar deze pagina na success (i.p.v. inline state).
+- Triggert `gtag`/`plausible` event als analytics later toegevoegd wordt (event hook nu al inbouwen, no-op fallback).
 
 ## Bestanden
-
 **Nieuw:**
-- `src/components/home/QuoteWizard.tsx` — hoofdcomponent (state machine met `useState` step 1-4 + formData)
-- `src/components/home/wizard/StepService.tsx` — stap 1 dienst-grid
-- `src/components/home/wizard/StepScope.tsx` — stap 2 omvang/timing
-- `src/components/home/wizard/StepLocation.tsx` — stap 3 postcode
-- `src/components/home/wizard/StepContact.tsx` — stap 4 contact + submit
-- `src/components/home/wizard/WizardProgress.tsx` — progress bar
-- `src/lib/quote-schema.ts` — Zod schemas per stap
+- `supabase/migrations/<ts>_quote_requests.sql`
+- `supabase/functions/submit-quote/index.ts`
+- `supabase/functions/_shared/transactional-email-templates/quote-notification.tsx` (intern)
+- `supabase/functions/_shared/transactional-email-templates/quote-confirmation.tsx` (klant)
+- `src/pages/OfferteBedankt.tsx`
+- `src/components/home/HeroSocialProof.tsx`
 
 **Aangepast:**
-- `src/components/home/Hero.tsx` — 2-koloms layout (lg:grid-cols-2), USP-checks links, wizard rechts; behoud bg-image + antraciet overlay; behoud Bel/WhatsApp knoppen onder USP's
+- `src/components/layout/Header.tsx` (logo groter)
+- `src/components/layout/Footer.tsx` (logo proportioneel)
+- `src/components/home/Hero.tsx` (social proof onder USP's)
+- `src/components/home/QuoteWizard.tsx` (top 6 + meer, auto-progress, postcode format, submit naar edge function, redirect)
+- `src/App.tsx` (route `/offerte-bedankt`)
+- Optioneel `src/lib/quote-schema.ts` (honeypot veld)
 
-**Ongewijzigd:** alle andere pagina's, `ContactSection`, `Contact.tsx` (blijft als uitgebreid formulier voor directe bezoekers van /contact)
+## Wat ik NIET in dit plan doe
+- SEO meta-tags / JSON-LD / GA4 (apart traject — koos je nu niet).
+- Prijsindicatie tonen (eerder afgewezen).
+- Echte keurmerk-logo's uploaden (jij levert later aan).
 
-## Technisch
-- Geen backend: submit gaat (net als huidige form) via `toast.success` simulatie — klaar voor latere koppeling aan Lovable Cloud / e-mail edge function
-- Gebruikt bestaande shadcn componenten: Button, Input, Textarea, Label, Progress
-- Lucide icons hergebruikt uit `ServicesGrid`
-- Animatie: simpele fade/slide tussen stappen via Tailwind `transition` + key-remount (geen extra lib)
-- Volledig responsive: mobiel = full-width kaart onder tekst, geen sticky CTA conflict
-
-## Out of scope
-- Geen prijsindicatie/berekening
-- Geen database-opslag (volgt later indien gewenst)
-- Geen wijzigingen aan /contact pagina, Diensten, Projecten etc.
+## Vraag aan jou (kan ook na approval)
+1. Welk **e-mailadres** moet de offerte-notificaties ontvangen?
+2. Klopt **150+ projecten** en **4.9 / 87 reviews** als getallen, of zijn er andere cijfers?
