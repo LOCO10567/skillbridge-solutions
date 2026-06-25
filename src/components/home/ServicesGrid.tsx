@@ -71,11 +71,12 @@ const services = [
     slug: "koof"
   },
   { 
-    icon: Thermometer, 
-    title: "Warmte isolatie", 
-    description: "Bespaar energie, verhoog comfort",
-    slug: "isolatie"
+    icon: Footprints, 
+    title: "Vloeren en trappen", 
+    description: "Strakke vloeren en gerenoveerde trappen",
+    slug: "vloeren"
   },
+
   { 
     icon: Footprints, 
     title: "Vloeren en trappen", 
