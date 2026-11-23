@@ -28,7 +28,7 @@ export function Hero() {
           {/* Left — copy */}
           <div className="lg:col-span-3">
             <span className="inline-block px-3 py-1 rounded-full bg-accent/15 text-accent text-xs font-semibold uppercase tracking-wider mb-5 border border-accent/30">
-              Aannemersbedrijf · Sinds 2023
+              Aannemersbedrijf · Sinds 2010
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-[1.1] mb-5">
               Verbouwen met zekerheid.{" "}

@@ -1,4 +1,4 @@
-import { Star, ShieldCheck, Hammer } from "lucide-react";
+import { Star, ShieldCheck, Award, Hammer } from "lucide-react";
 
 const avatars = [
   { initials: "MK", color: "bg-accent" },
@@ -43,6 +43,7 @@ export function HeroSocialProof() {
       {/* Trust badges */}
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
         <Badge icon={ShieldCheck} label="Erkend & verzekerd" />
+        <Badge icon={Award} label="10+ jaar ervaring" />
         <Badge icon={Hammer} label="150+ projecten" />
       </div>
     </div>
