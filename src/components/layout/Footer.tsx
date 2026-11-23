@@ -36,9 +36,9 @@ export function Footer() {
                 <Phone className="h-4 w-4 text-accent" />
                 06-84724747
               </a>
-              <a href="mailto:info@skillbridge.nl" className="flex items-center gap-3 text-sm hover:text-accent transition-colors">
+              <a href="mailto:info@marmerbeheer.nl" className="flex items-center gap-3 text-sm hover:text-accent transition-colors">
                 <Mail className="h-4 w-4 text-accent" />
-                info@skillbridge.nl
+                info@marmerbeheer.nl
               </a>
               <div className="flex items-start gap-3 text-sm text-primary-foreground/80">
                 <MapPin className="h-4 w-4 text-accent mt-0.5" />
