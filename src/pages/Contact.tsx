@@ -81,7 +81,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground mb-1">Telefoon</h3>
-                    <a href="tel:+31612345678" className="text-muted-foreground hover:text-accent transition-colors">
+                    <a href="tel:+31684724747" className="text-muted-foreground hover:text-accent transition-colors">
                       06 - 1234 5678
                     </a>
                   </div>
@@ -94,7 +94,7 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold text-foreground mb-1">WhatsApp</h3>
                     <a 
-                      href="https://wa.me/31612345678?text=Hallo%2C%20ik%20wil%20graag%20een%20offerte%20aanvragen."
+                      href="https://wa.me/31684724747?text=Hallo%2C%20ik%20wil%20graag%20een%20offerte%20aanvragen."
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-muted-foreground hover:text-accent transition-colors"
@@ -136,7 +136,7 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold text-foreground mb-1">Werkgebied</h3>
                     <p className="text-muted-foreground">
-                      [Regio] en omstreken
+                      Rotterdam en 50 km rondom
                     </p>
                   </div>
                 </div>

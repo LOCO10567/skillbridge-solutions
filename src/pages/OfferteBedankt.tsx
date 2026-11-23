@@ -51,14 +51,14 @@ export default function OfferteBedankt() {
           {/* Follow-up CTAs */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
             <a
-              href="tel:+31612345678"
+              href="tel:+31684724747"
               className="flex items-center justify-center gap-2 bg-accent hover:bg-orange-hover text-accent-foreground font-semibold py-3 px-5 rounded-lg transition-colors"
             >
               <Phone className="h-5 w-5" />
               Bel direct
             </a>
             <a
-              href="https://wa.me/31612345678"
+              href="https://wa.me/31684724747"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold py-3 px-5 rounded-lg transition-colors"

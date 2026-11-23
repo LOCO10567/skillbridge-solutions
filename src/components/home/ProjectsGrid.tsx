@@ -13,42 +13,42 @@ const projects = [
   {
     image: projectAanbouw,
     title: "Moderne aanbouw",
-    location: "[Stad]",
+    location: "Rotterdam",
     category: "Aanbouw",
     description: "Uitbreiding woonkamer met lichtstraat en schuifpui."
   },
   {
     image: projectBathroom,
     title: "Luxe badkamerrenovatie",
-    location: "[Stad]",
+    location: "Schiedam",
     category: "Badkamer",
     description: "Complete badkamer met inloopdouche en maatwerk meubel."
   },
   {
     image: projectDakkapel,
     title: "Dakkapel op zolder",
-    location: "[Stad]",
+    location: "Dordrecht",
     category: "Dakkapel",
     description: "Ruime dakkapel voor extra slaapkamer op zolder."
   },
   {
     image: projectRenovatie,
     title: "Volledige woningrenovatie",
-    location: "[Stad]",
+    location: "Delft",
     category: "Renovatie",
     description: "Jaren 70 woning compleet gerenoveerd en geïsoleerd."
   },
   {
     image: projectGarage,
     title: "Garage met werkplaats",
-    location: "[Stad]",
+    location: "Gouda",
     category: "Garage",
     description: "Nieuwe garage met ruimte voor hobbyruimte."
   },
   {
     image: projectNieuwbouw,
     title: "Vrijstaande nieuwbouw",
-    location: "[Stad]",
+    location: "Capelle a/d IJssel",
     category: "Nieuwbouw",
     description: "Moderne nieuwbouwwoning met duurzame afwerking."
   },

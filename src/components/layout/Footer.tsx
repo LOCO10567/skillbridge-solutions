@@ -32,7 +32,7 @@ export function Footer() {
               Verbouwen met zekerheid. Van aanbouw tot complete renovatie met heldere afspraken en vakwerk.
             </p>
             <div className="space-y-3">
-              <a href="tel:+31612345678" className="flex items-center gap-3 text-sm hover:text-accent transition-colors">
+              <a href="tel:+31684724747" className="flex items-center gap-3 text-sm hover:text-accent transition-colors">
                 <Phone className="h-4 w-4 text-accent" />
                 06 - 1234 5678
               </a>
@@ -42,7 +42,7 @@ export function Footer() {
               </a>
               <div className="flex items-start gap-3 text-sm text-primary-foreground/80">
                 <MapPin className="h-4 w-4 text-accent mt-0.5" />
-                <span>[Regio], Nederland</span>
+                <span>Rotterdam e.o. (50 km), Nederland</span>
               </div>
             </div>
           </div>

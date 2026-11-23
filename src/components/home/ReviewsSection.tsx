@@ -3,21 +3,21 @@ import { Star } from "lucide-react";
 const reviews = [
   {
     name: "Familie De Vries",
-    location: "[Stad]",
+    location: "Rotterdam",
     rating: 5,
     text: "Uitstekende ervaring met onze aanbouw. Van begin tot eind duidelijke communicatie en het resultaat overtreft onze verwachtingen. Echte vakmensen!",
     project: "Aanbouw"
   },
   {
     name: "J. Bakker",
-    location: "[Stad]",
+    location: "Schiedam",
     rating: 5,
     text: "Onze badkamer is prachtig geworden. Netjes gewerkt, alles opgeruimd aan het einde van de dag. Zou SkillBridge zeker aanraden.",
     project: "Badkamer renovatie"
   },
   {
     name: "M. van den Berg",
-    location: "[Stad]",
+    location: "Dordrecht",
     rating: 5,
     text: "Dakkapel geplaatst binnen de afgesproken tijd. Goede prijs-kwaliteit verhouding. Fijn om een vaste contactpersoon te hebben.",
     project: "Dakkapel"

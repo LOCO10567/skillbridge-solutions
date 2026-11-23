@@ -53,14 +53,14 @@ export function Hero() {
 
             <div className="flex flex-col sm:flex-row gap-3">
               <a
-                href="tel:+31612345678"
+                href="tel:+31684724747"
                 className="inline-flex items-center justify-center gap-2 bg-primary-foreground/10 hover:bg-primary-foreground hover:text-primary text-primary-foreground border-2 border-primary-foreground/20 backdrop-blur-sm font-semibold py-3 px-6 rounded-lg transition-all"
               >
                 <Phone className="h-5 w-5" />
-                Bel direct — 06 1234 5678
+                Bel direct — 06-84724747
               </a>
               <a
-                href="https://wa.me/31612345678?text=Hallo%2C%20ik%20wil%20graag%20een%20offerte%20aanvragen."
+                href="https://wa.me/31684724747?text=Hallo%2C%20ik%20wil%20graag%20een%20offerte%20aanvragen."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold py-3 px-6 rounded-lg transition-colors"

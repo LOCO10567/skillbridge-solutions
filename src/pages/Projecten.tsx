@@ -14,7 +14,7 @@ const projects = [
   {
     image: projectAanbouw,
     title: "Moderne aanbouw met lichtstraat",
-    location: "[Stad]",
+    location: "Rotterdam",
     category: "Aanbouw",
     description: "Complete uitbreiding van de woonkamer met moderne lichtstraat en grote schuifpui naar de tuin. Inclusief vloerverwarming en stucwerk.",
     year: "2024"
@@ -22,7 +22,7 @@ const projects = [
   {
     image: projectBathroom,
     title: "Luxe badkamerrenovatie",
-    location: "[Stad]",
+    location: "Schiedam",
     category: "Badkamer",
     description: "Volledige renovatie van de badkamer met inloopdouche, vrijstaand bad en maatwerk meubel. Moderne uitstraling met tijdloze materialen.",
     year: "2024"
@@ -30,7 +30,7 @@ const projects = [
   {
     image: projectDakkapel,
     title: "Dakkapel voor extra slaapkamer",
-    location: "[Stad]",
+    location: "Dordrecht",
     category: "Dakkapel",
     description: "Ruime dakkapel geplaatst voor extra slaapkamer op zolder. Inclusief isolatie, stucwerk en elektra.",
     year: "2024"
@@ -38,7 +38,7 @@ const projects = [
   {
     image: projectRenovatie,
     title: "Complete woningrenovatie jaren 70",
-    location: "[Stad]",
+    location: "Delft",
     category: "Renovatie",
     description: "Volledige renovatie van jaren 70 woning. Nieuwe indeling, isolatie, vloeren en moderne keuken.",
     year: "2023"
@@ -46,7 +46,7 @@ const projects = [
   {
     image: projectGarage,
     title: "Garage met hobbyruimte",
-    location: "[Stad]",
+    location: "Gouda",
     category: "Garage",
     description: "Nieuwe garage gebouwd met ruimte voor werkplaats. Geïsoleerd en voorzien van elektra en verlichting.",
     year: "2023"
@@ -54,7 +54,7 @@ const projects = [
   {
     image: projectNieuwbouw,
     title: "Vrijstaande nieuwbouwwoning",
-    location: "[Stad]",
+    location: "Capelle a/d IJssel",
     category: "Nieuwbouw",
     description: "Complete nieuwbouw van vrijstaande woning. Modern ontwerp met duurzame materialen en goede isolatie.",
     year: "2023"

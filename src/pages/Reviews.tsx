@@ -6,7 +6,7 @@ import { Star, ArrowRight, Quote } from "lucide-react";
 const reviews = [
   {
     name: "Familie De Vries",
-    location: "[Stad]",
+    location: "Rotterdam",
     rating: 5,
     text: "Uitstekende ervaring met onze aanbouw. Van begin tot eind duidelijke communicatie en het resultaat overtreft onze verwachtingen. Echte vakmensen die netjes werken en alles goed achterlaten. Zou SkillBridge zonder twijfel aanraden!",
     project: "Aanbouw woonkamer",
@@ -14,7 +14,7 @@ const reviews = [
   },
   {
     name: "J. Bakker",
-    location: "[Stad]",
+    location: "Schiedam",
     rating: 5,
     text: "Onze badkamer is prachtig geworden. Netjes gewerkt, elke dag opgeruimd aan het einde van de dag. Goede prijs-kwaliteit verhouding en het is precies geworden zoals we hadden gehoopt. Bedankt!",
     project: "Badkamer renovatie",
@@ -22,7 +22,7 @@ const reviews = [
   },
   {
     name: "M. van den Berg",
-    location: "[Stad]",
+    location: "Dordrecht",
     rating: 5,
     text: "Dakkapel geplaatst binnen de afgesproken tijd. Zeer tevreden over de communicatie en het eindresultaat. Fijn om een vaste contactpersoon te hebben die alles regelt.",
     project: "Dakkapel plaatsen",
@@ -30,7 +30,7 @@ const reviews = [
   },
   {
     name: "Familie Jansen",
-    location: "[Stad]",
+    location: "Delft",
     rating: 5,
     text: "Complete renovatie van onze jaren 70 woning laten uitvoeren. Groot project maar alles verliep soepel. Duidelijke offerte, goede planning en een prachtig resultaat. Echt vakwerk!",
     project: "Woningrenovatie",
@@ -38,7 +38,7 @@ const reviews = [
   },
   {
     name: "P. de Groot",
-    location: "[Stad]",
+    location: "Gouda",
     rating: 5,
     text: "Garage laten bouwen met ruimte voor werkplaats. Mooi vakwerk, alles netjes afgewerkt. Prettige samenwerking en goede communicatie gedurende het hele project.",
     project: "Garage bouwen",
@@ -46,7 +46,7 @@ const reviews = [
   },
   {
     name: "Familie Smit",
-    location: "[Stad]",
+    location: "Capelle a/d IJssel",
     rating: 5,
     text: "Heel blij met onze nieuwe keukenuitbreiding. Ze hebben meegedacht over de indeling en het is precies geworden wat we wilden. Aanrader voor iedereen die wil verbouwen!",
     project: "Aanbouw keuken",

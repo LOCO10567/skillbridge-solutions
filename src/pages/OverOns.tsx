@@ -134,7 +134,7 @@ const OverOns = () => {
               Ons werkgebied
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              SkillBridge Bouwservices is actief in [Regio] en omstreken. 
+              SkillBridge Bouwservices is actief in Rotterdam en 50 km rondom. 
               We werken voor zowel particulieren als zakelijke opdrachtgevers.
             </p>
             <p className="text-muted-foreground">
