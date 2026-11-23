@@ -34,7 +34,7 @@ export function Footer() {
             <div className="space-y-3">
               <a href="tel:+31684724747" className="flex items-center gap-3 text-sm hover:text-accent transition-colors">
                 <Phone className="h-4 w-4 text-accent" />
-                06 - 1234 5678
+                06-84724747
               </a>
               <a href="mailto:info@skillbridge.nl" className="flex items-center gap-3 text-sm hover:text-accent transition-colors">
                 <Mail className="h-4 w-4 text-accent" />
